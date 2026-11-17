@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Víkend v Malaze 27.–30. 11.</title>
+<meta name="description" content="Let z Brna, ubytování a program na víkend v Malaze. Cca 4 800 Kč na osobu.">
+<meta property="og:title" content="Víkend v Malaze 27.–30. 11.">
+<meta property="og:description" content="Let z Brna, ubytování a program. Cca 4 800 Kč na osobu.">
+<meta property="og:image" content="https://tsmerda.github.io/malaga-vikend/img/malaga.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#1D3F8F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #14213D;
+    --cobalt: #1D3F8F;
+    --wash: #F4F7FB;
+    --sky: #DDE7F6;
+    --gold: #E7A31A;
+    --white: #FFFFFF;
+    --muted: #5A6785;
+    --display: "Unbounded", "Arial Black", system-ui, sans-serif;
+    --body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--wash);
+    color: var(--ink);
+    font: 400 17px/1.55 var(--body);
+    padding-bottom: 88px;
+  }
+  a { color: var(--cobalt); }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+  img { display: block; max-width: 100%; }
+
+  /* Hero */
+  .hero {
+    position: relative;
+    min-height: min(78vh, 640px);
+    display: flex;
+    align-items: flex-end;
+    color: var(--white);
+    background: var(--cobalt) url("img/malaga.jpg") center 40% / cover no-repeat;
+  }
+  .hero::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(20,33,61,0) 30%, rgba(20,33,61,.78) 100%);
+  }
+  .hero-in {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 960px; margin: 0 auto;
+    padding: 0 22px 120px;
+  }
+  .hero h1 {
+    margin: 0;
+    font: 800 clamp(64px, 19vw, 168px)/0.9 var(--display);
+    letter-spacing: -0.03em;
+  }
+  .hero p {
+    margin: 14px 0 0;
+    font-size: clamp(18px, 2.6vw, 22px);
+    max-width: 34ch;
+  }
+
+  main { max-width: 960px; margin: 0 auto; padding: 0 22px; }
+
+  /* Boarding pass: the one loud element */
+  .pass {
+    position: relative; z-index: 2;
+    margin-top: -88px;
+    background: var(--white);
+    border-radius: 22px;
+    box-shadow: 0 18px 40px -18px rgba(20,33,61,.45);
+    overflow: hidden;
+  }
+  .leg { padding: 22px 22px 20px; }
+  .leg-date { font-weight: 600; color: var(--muted); font-size: 15px; }
+  .route {
+    display: grid; grid-template-columns: auto 1fr auto; align-items: end; gap: 12px;
+    margin-top: 6px;
+  }
+  .code { font: 700 clamp(34px, 9vw, 54px)/1 var(--display); letter-spacing: -0.02em; }
+  .time { font-weight: 600; font-size: 16px; margin-top: 6px; }
+  .route .to { text-align: right; }
+  .path { position: relative; height: 2px; background: var(--sky); margin-bottom: 22px; }
+  .path svg { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 26px; height: 26px; color: var(--cobalt); background: var(--white); padding: 0 4px; box-sizing: content-box; }
+  .perf {
+    position: relative; height: 0; border-top: 2px dashed var(--sky); margin: 0 22px;
+  }
+  .perf::before, .perf::after {
+    content: ""; position: absolute; top: -13px; width: 24px; height: 24px; border-radius: 50%; background: var(--wash);
+  }
+  .perf::before { left: -35px; }
+  .perf::after { right: -35px; }
+  .stub {
+    background: var(--cobalt); color: var(--white);
+    padding: 18px 22px;
+    display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; justify-content: space-between;
+  }
+  .stub strong { font: 700 24px/1.1 var(--display); }
+  .stub small { display: block; opacity: .85; font-size: 14px; margin-top: 4px; }
+  .btn {
+    display: inline-block; text-decoration: none; font-weight: 600;
+    padding: 11px 18px; border-radius: 999px;
+    background: var(--white); color: var(--cobalt);
+  }
+  .btn.ghost { background: var(--cobalt); color: var(--white); }
+
+  section { margin-top: 56px; }
+  h2 { font: 700 clamp(24px, 4vw, 30px)/1.15 var(--display); margin: 0 0 6px; letter-spacing: -0.01em; }
+  .lead { margin: 0 0 18px; color: var(--muted); max-width: 60ch; }
+
+  /* Stay choice */
+  .choice { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .choice input { position: absolute; opacity: 0; pointer-events: none; }
+  .choice label {
+    display: block; cursor: pointer;
+    background: var(--white); border: 2px solid var(--sky); border-radius: 16px;
+    padding: 14px 16px;
+  }
+  .choice label b { display: block; font-size: 17px; }
+  .choice label span { color: var(--muted); font-size: 15px; }
+  .choice input:checked + label { border-color: var(--cobalt); background: var(--sky); }
+  .choice input:focus-visible + label { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .stay-detail { margin-top: 14px; padding: 4px 2px; }
+  .stay-detail h3 { margin: 0; font-size: 20px; }
+  .stay-detail p { margin: 4px 0 12px; color: var(--muted); }
+
+  /* Program tabs */
+  .tabs { display: flex; gap: 6px; border-bottom: 2px solid var(--sky); margin-bottom: 18px; }
+  .tab {
+    appearance: none; border: 0; background: none; cursor: pointer;
+    font: 600 16px var(--body); color: var(--muted);
+    padding: 10px 14px 12px; margin-bottom: -2px;
+    border-bottom: 3px solid transparent;
+  }
+  .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--gold); }
+  .day-photo { border-radius: 18px; overflow: hidden; margin: 0 0 18px; background: var(--sky); }
+  .day-photo img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+  .day-photo figcaption { font-size: 13px; color: var(--muted); padding: 8px 12px; background: var(--white); }
+  .stops { list-style: none; margin: 0; padding: 0; }
+  .stops li { display: grid; grid-template-columns: 64px 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid var(--sky); }
+  .stops li:first-child { border-top: 0; }
+  .stops time { font-weight: 600; color: var(--cobalt); font-variant-numeric: tabular-nums; }
+  .stops b { display: block; }
+  .stops span { color: var(--muted); font-size: 15px; }
+  .swap {
+    display: flex; gap: 12px; align-items: flex-start;
+    margin-top: 16px; padding: 14px 16px; border-radius: 16px; background: var(--white);
+    cursor: pointer;
+  }
+  .swap input { width: 22px; height: 22px; margin: 2px 0 0; accent-color: var(--cobalt); flex: none; }
+  .swap span { color: var(--muted); font-size: 15px; }
+
+  /* Budget */
+  .budget { width: 100%; border-collapse: collapse; background: var(--white); border-radius: 16px; overflow: hidden; }
+  .budget td { padding: 12px 16px; border-top: 1px solid var(--wash); }
+  .budget tr:first-child td { border-top: 0; }
+  .budget td:last-child { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .budget .total td { font-weight: 700; background: var(--sky); font-size: 18px; }
+  .note { font-size: 15px; color: var(--muted); margin: 12px 0 0; }
+
+  .weather { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .weather div { background: var(--white); border-radius: 16px; padding: 14px 16px; }
+  .weather b { display: block; font: 700 clamp(22px, 6vw, 28px)/1.1 var(--display); color: var(--cobalt); }
+  .weather span { color: var(--muted); font-size: 15px; }
+
+  footer { max-width: 960px; margin: 64px auto 0; padding: 0 22px 24px; font-size: 13px; color: var(--muted); }
+  footer p { margin: 6px 0; }
+
+  /* Sticky total */
+  .bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+    background: var(--ink); color: var(--white);
+    padding: 12px 22px calc(12px + env(safe-area-inset-bottom));
+  }
+  .bar-in { max-width: 960px; margin: 0 auto; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .bar output { font: 700 22px/1 var(--display); color: var(--gold); }
+  .bar small { opacity: .8; font-size: 14px; }
+
+  @media (min-width: 760px) {
+    body { font-size: 18px; }
+    .leg { padding: 26px 32px 24px; }
+    .perf { margin: 0 32px; }
+    .perf::before { left: -45px; } .perf::after { right: -45px; }
+    .stub { padding: 20px 32px; }
+    .program { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: start; }
+    .program .day-photo { margin-bottom: 0; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .bar output { transition: color .2s; }
+    .bar output.flash { color: var(--white); }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-in">
+    <h1>Málaga</h1>
+    <p>Víkend ve dvou od pátku 27. do pondělí 30. listopadu. Kolem 20 °C, vánoční světla a tapas.</p>
+  </div>
+</header>
+
+<main>
+  <article class="pass" aria-label="Lety">
+    <div class="leg">
+      <div class="leg-date">Pátek 27. 11.</div>
+      <div class="route">
+        <div><div class="code">BRQ</div><div class="time">20:10 Brno</div></div>
+        <div class="path" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" transform="rotate(90 12 12)"/></svg></div>
+        <div class="to"><div class="code">AGP</div><div class="time">23:30 Málaga</div></div>
+      </div>
+    </div>
+    <div class="perf" aria-hidden="true"></div>
+    <div class="leg">
+      <div class="leg-date">Pondělí 30. 11.</div>
+      <div class="route">
+        <div><div class="code">AGP</div><div class="time">7:55 Málaga</div></div>
+        <div class="path" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" transform="rotate(90 12 12)"/></svg></div>
+        <div class="to"><div class="code">BRQ</div><div class="time">11:10 Brno</div></div>
+      </div>
+    </div>
+    <div class="stub">
+      <div>
+        <strong>3 171 Kč</strong>
+        <small>Ryanair tam i zpět na osobu. 17. 11. zbývala za tuhle cenu poslední 2 místa.</small>
+      </div>
+      <a class="btn" href="https://www.ryanair.com/cz/cs/trip/flights/select?adults=2&amp;teens=0&amp;children=0&amp;infants=0&amp;dateOut=2026-11-27&amp;dateIn=2026-11-30&amp;isConnectedFlight=false&amp;discount=0&amp;isReturn=true&amp;promoCode=&amp;originIata=BRQ&amp;destinationIata=AGP" target="_blank" rel="noopener">Otevřít let</a>
+    </div>
+  </article>
+
+  <section aria-labelledby="h-stay">
+    <h2 id="h-stay">Kde spíme</h2>
+    <p class="lead">Tři noci na Airbnb. Vyber si, cena dole se přepočítá.</p>
+    <div class="choice" role="radiogroup" aria-label="Ubytování">
+      <input type="radio" name="stay" id="stay-room" value="room" checked>
+      <label for="stay-room"><b>Pokoj</b><span>2 506 Kč za oba</span></label>
+      <input type="radio" name="stay" id="stay-flat" value="flat">
+      <label for="stay-flat"><b>Celý byt</b><span>4 945 Kč za oba</span></label>
+    </div>
+    <div class="stay-detail" id="stay-detail" aria-live="polite"></div>
+  </section>
+
+  <section aria-labelledby="h-plan">
+    <h2 id="h-plan">Program</h2>
+    <p class="lead">Sobota na centrum a pláž, neděle na památky, které jsou odpoledne zdarma.</p>
+    <div class="tabs" role="tablist" aria-label="Dny">
+      <button class="tab" role="tab" id="t-pa" aria-controls="day-panel" aria-selected="false" data-day="pa">Pá</button>
+      <button class="tab" role="tab" id="t-so" aria-controls="day-panel" aria-selected="true" data-day="so">So</button>
+      <button class="tab" role="tab" id="t-ne" aria-controls="day-panel" aria-selected="false" data-day="ne">Ne</button>
+      <button class="tab" role="tab" id="t-po" aria-controls="day-panel" aria-selected="false" data-day="po">Po</button>
+    </div>
+    <div id="day-panel" role="tabpanel" aria-labelledby="t-so"></div>
+  </section>
+
+  <section aria-labelledby="h-money">
+    <h2 id="h-money">Kolik to stojí</h2>
+    <p class="lead">Na osobu, bez jídla a vstupů.</p>
+    <table class="budget" id="budget"></table>
+  </section>
+
+  <section aria-labelledby="h-weather">
+    <h2 id="h-weather">Počasí</h2>
+    <p class="lead">Průměr pro konec listopadu.</p>
+    <div class="weather">
+      <div><b>20 °C</b><span>přes den</span></div>
+      <div><b>11 °C</b><span>v noci</span></div>
+      <div><b>17 °C</b><span>moře</span></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Ceny ověřené 17. 11. 2026 na Ryanair.com a Airbnb.cz, mohou se měnit.</p>
+  <p>Fotky (oříznuté) z Wikimedia Commons:
+    <a href="https://commons.wikimedia.org/wiki/File:View_of_Malaga_from_Castillo_Gibralfaro._Spain.jpg">Málaga z Gibralfara</a>, Ввласенко, CC BY-SA 3.0;
+    <a href="https://commons.wikimedia.org/wiki/File:Street_lighting_Malaga_christmas_%2831784122642%29.jpg">Calle Larios</a>, Hernán Piñera, CC BY-SA 2.0;
+    <a href="https://commons.wikimedia.org/wiki/File:Alcazaba,_M%C3%A1laga,_Espa%C3%B1a,_2023-05-20,_DD_10.jpg">Alcazaba</a>, Diego Delso, CC BY-SA 4.0;
+    <a href="https://commons.wikimedia.org/wiki/File:Desfiladero_de_los_Gaitanes_%2853709435674%29.jpg">Caminito del Rey</a>, Alan Grant, CC BY 2.0.
+  </p>
+</footer>
+
+<div class="bar" role="status">
+  <div class="bar-in">
+    <small>Na osobu celkem</small>
+    <output id="bar-total">cca 4 800 Kč</output>
+  </div>
+</div>
+
+<script>
+  const STAYS = {
+    room: { name: "Soukromý pokoj kousek od pláže", rating: "4,93 z 5 (138 recenzí)", total: 2506,
+            url: "https://www.airbnb.cz/rooms/7996564?check_in=2026-11-27&check_out=2026-11-30&adults=2",
+            note: "Pokoj ve sdíleném bytě, levnější varianta." },
+    flat: { name: "Apartmány Rosy Mari", rating: "4,89 z 5 (1 310 recenzí)", total: 4945,
+            url: "https://www.airbnb.cz/rooms/1691362913350835895?check_in=2026-11-27&check_out=2026-11-30&adults=2",
+            note: "Celý byt jen pro nás." }
+  };
+  const FLIGHTS = 3171, TRANSPORT = 375, CAMINITO = 1600;
+
+  const DAYS = {
+    pa: { photo: null, stops: [
+      ["20:10", "Odlet z Brna", "Ryanair, s sebou jen malá taška pod sedadlo (40×30×20 cm)."],
+      ["23:30", "Přílet do Malagy", "Vlak už nejede, taxi do centra stojí 20–25 €."]
+    ]},
+    so: { photo: ["img/larios.jpg", "Vánoční světla na Calle Larios, foto z dřívějšího roku. Výzdoba se každý rok mění."], stops: [
+      ["9:30", "Tržnice Atarazanas", "Snídaně a tapas, v neděli je zavřeno."],
+      ["11:00", "Katedrála a staré město", "Calle Larios, Plaza de la Merced, Římské divadlo."],
+      ["14:00", "Muelle Uno a pláž Malagueta", "Oběd u přístavu a procházka po pláži."],
+      ["17:00", "Vyhlídka Gibralfaro", "Západ slunce nad přístavem."],
+      ["20:30", "Vánoční světla na Calle Larios", "Světelná show, potom tapas v okolí."]
+    ]},
+    soAlt: { photo: ["img/caminito.jpg", "Caminito del Rey v soutěsce Desfiladero de los Gaitanes."], stops: [
+      ["ráno", "Autobus z centra", "Výlet s průvodcem, cesta trvá asi hodinu."],
+      ["dopol.", "Caminito del Rey", "7,7 km po lávkách ve skalní soutěsce."],
+      ["odpol.", "Návrat do Malagy", "Odpočinek a sprcha."],
+      ["20:30", "Vánoční světla na Calle Larios", "Světelná show, potom tapas v okolí."]
+    ]},
+    ne: { photo: ["img/alcazaba.jpg", "Alcazaba nad Římským divadlem."], stops: [
+      ["10:30", "Pláže Pedregalejo a El Palo", "Procházka po pláži, k obědu espetos (sardinky z grilu)."],
+      ["14:00", "Alcazaba a hrad Gibralfaro", "V neděli od 14:00 vstup zdarma."],
+      ["16:30", "Museo Picasso nebo Centre Pompidou", "V neděli odpoledne vstup zdarma."],
+      ["18:30", "Světla a poslední večeře", "Brzy spát, ráno se letí."]
+    ]},
+    po: { photo: null, stops: [
+      ["5:45", "Na letiště", "Vlak C1 z centra nebo taxi."],
+      ["7:55", "Odlet z Malagy", "Ryanair, přímý let."],
+      ["11:10", "Přílet do Brna", "Doma před polednem."]
+    ]}
+  };
+
+  const state = { stay: "room", day: "so", caminito: false };
+  const fmt = n => n.toLocaleString("cs-CZ").replace(/\s/g, " ") + " Kč";
+  const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  function renderStay() {
+    const s = STAYS[state.stay];
+    document.getElementById("stay-detail").innerHTML =
+      `<h3>${esc(s.name)}</h3><p>${esc(s.note)} Hodnocení ${esc(s.rating)}, ${fmt(s.total)} za 3 noci pro oba.</p>` +
+      `<a class="btn ghost" href="${s.url}" target="_blank" rel="noopener">Zobrazit na Airbnb</a>`;
+  }
+
+  function renderDay() {
+    const key = state.day === "so" && state.caminito ? "soAlt" : state.day;
+    const d = DAYS[key];
+    const photo = d.photo
+      ? `<figure class="day-photo"><img src="${d.photo[0]}" alt="${esc(d.photo[1])}" width="1200" height="677"><figcaption>${esc(d.photo[1])}</figcaption></figure>`
+      : "";
+    const list = `<ol class="stops">${d.stops.map(([t, n, x]) => `<li><time>${t}</time><div><b>${esc(n)}</b><span>${esc(x)}</span></div></li>`).join("")}</ol>`;
+    const swap = state.day === "so"
+      ? `<label class="swap"><input type="checkbox" id="caminito" ${state.caminito ? "checked" : ""}><div><b>Místo města výlet na Caminito del Rey</b><br><span>Stezka po lávkách hodinu od Malagy. Výlet s dopravou a vstupem 66 € na osobu, rezervovat předem.</span></div></label>`
+      : "";
+    const panel = document.getElementById("day-panel");
+    panel.setAttribute("aria-labelledby", "t-" + state.day);
+    panel.innerHTML = photo ? `<div class="program">${photo}<div>${list}${swap}</div></div>` : `${list}${swap}`;
+    const cb = document.getElementById("caminito");
+    if (cb) cb.addEventListener("change", e => { state.caminito = e.target.checked; renderDay(); renderBudget(); });
+  }
+
+  function renderBudget() {
+    const stayPP = Math.round(STAYS[state.stay].total / 2);
+    const rows = [
+      ["Letenky tam i zpět", FLIGHTS],
+      [state.stay === "room" ? "Pokoj, půlka za 3 noci" : "Celý byt, půlka za 3 noci", stayPP],
+      ["Taxi, vlak a MHD", TRANSPORT]
+    ];
+    if (state.caminito) rows.push(["Výlet na Caminito del Rey (66 €)", CAMINITO]);
+    const total = rows.reduce((a, r) => a + r[1], 0);
+    const rounded = Math.round(total / 100) * 100;
+    document.getElementById("budget").innerHTML =
+      rows.map(([k, v]) => `<tr><td>${k}</td><td>${(k.startsWith("Taxi") || k.startsWith("Výlet")) ? "cca " : ""}${fmt(v)}</td></tr>`).join("") +
+      `<tr class="total"><td>Celkem</td><td>cca ${fmt(rounded)}</td></tr>`;
+    const out = document.getElementById("bar-total");
+    out.textContent = "cca " + fmt(rounded);
+    out.classList.add("flash"); setTimeout(() => out.classList.remove("flash"), 200);
+  }
+
+  document.querySelectorAll('input[name="stay"]').forEach(r =>
+    r.addEventListener("change", e => { state.stay = e.target.value; renderStay(); renderBudget(); }));
+
+  const tabs = [...document.querySelectorAll(".tab")];
+  tabs.forEach((t, i) => {
+    t.addEventListener("click", () => select(t));
+    t.addEventListener("keydown", e => {
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        const n = tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+        n.focus(); select(n);
+      }
+    });
+  });
+  function select(t) {
+    tabs.forEach(x => { x.setAttribute("aria-selected", x === t); x.tabIndex = x === t ? 0 : -1; });
+    state.day = t.dataset.day; renderDay();
+  }
+  tabs.forEach(x => x.tabIndex = x.getAttribute("aria-selected") === "true" ? 0 : -1);
+
+  renderStay(); renderDay(); renderBudget();
+</script>
+</body>
+</html>

@@ -240,9 +240,10 @@
   .lb p { margin: 6px 0 4px; opacity: .9; }
   .lb small { opacity: .6; font-size: 12px; }
   .lb small a { color: inherit; }
-  .lb-nav { display: flex; gap: 8px; justify-content: space-between; align-items: center; padding: 16px 18px 18px; }
+  .lb-nav { display: flex; gap: 12px; align-items: center; padding: 16px 18px calc(18px + env(safe-area-inset-bottom)); }
   .lb-nav button { appearance: none; border: 0; cursor: pointer; font: 600 16px var(--body); padding: 10px 16px; border-radius: 999px; background: rgba(255,255,255,.14); color: var(--white); }
-  .lb-nav .x { background: var(--white); color: var(--ink); }
+  .lb-nav .arr { width: 48px; height: 48px; padding: 0; font: 700 26px/1 var(--body); }
+  .lb-nav .x { background: var(--white); color: var(--ink); margin-left: auto; }
   .lb-count { opacity: .7; font-size: 14px; }
 
   /* Budget */
@@ -254,8 +255,8 @@
   .note { font-size: 15px; color: var(--muted); margin: 12px 0 0; }
 
   .weather { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .weather div { background: var(--white); border-radius: 16px; padding: 14px 16px; }
-  .weather b { display: block; font: 700 clamp(22px, 6vw, 28px)/1.1 var(--display); color: var(--cobalt); }
+  .weather div { background: var(--white); border-radius: 16px; padding: 14px 12px; min-width: 0; }
+  .weather b { display: block; white-space: nowrap; font: 700 clamp(20px, 5.6vw, 28px)/1.1 var(--display); color: var(--cobalt); }
   .weather span { color: var(--muted); font-size: 15px; }
 
   footer { max-width: 960px; margin: 64px auto 0; padding: 0 22px 24px; font-size: 13px; color: var(--muted); }
@@ -391,9 +392,9 @@
     <h2 id="h-weather">Počasí</h2>
     <p class="lead">Průměr pro konec listopadu.</p>
     <div class="weather">
-      <div><b>20 °C</b><span>přes den</span></div>
-      <div><b>11 °C</b><span>v noci</span></div>
-      <div><b>17 °C</b><span>moře</span></div>
+      <div><b>20&nbsp;°C</b><span>přes den</span></div>
+      <div><b>11&nbsp;°C</b><span>v noci</span></div>
+      <div><b>17&nbsp;°C</b><span>moře</span></div>
     </div>
   </section>
 </main>
@@ -416,9 +417,9 @@
     <figcaption><h3 id="lb-name"></h3><p id="lb-text"></p><small id="lb-credit"></small></figcaption>
   </figure>
   <div class="lb-nav">
-    <button id="lb-prev" aria-label="Předchozí fotka">Předchozí</button>
+    <button class="arr" id="lb-prev" aria-label="Předchozí fotka">‹</button>
     <span class="lb-count" id="lb-count"></span>
-    <button id="lb-next" aria-label="Další fotka">Další</button>
+    <button class="arr" id="lb-next" aria-label="Další fotka">›</button>
     <button class="x" id="lb-close">Zavřít</button>
   </div>
 </dialog>

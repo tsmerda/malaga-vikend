@@ -7,7 +7,7 @@
 <meta name="description" content="Let z Brna, ubytování a program na víkend v Malaze. Cca 4 800 Kč na osobu.">
 <meta property="og:title" content="Víkend v Malaze 27.–30. 11.">
 <meta property="og:description" content="Let z Brna, ubytování a program. Cca 4 800 Kč na osobu.">
-<meta property="og:image" content="https://tsmerda.github.io/malaga-vikend/img/malaga.jpg">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/%22Malaga_am_Abend_ist_einfach_magisch%22._08.jpg/1280px-%22Malaga_am_Abend_ist_einfach_magisch%22._08.jpg">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#1D3F8F">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,12 +45,14 @@
     display: flex;
     align-items: flex-end;
     color: var(--white);
-    background: var(--cobalt) url("img/malaga.jpg") center 40% / cover no-repeat;
+    background: var(--ink);
+    overflow: hidden;
   }
+  .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
   .hero::after {
     content: "";
     position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(20,33,61,0) 30%, rgba(20,33,61,.78) 100%);
+    background: linear-gradient(180deg, rgba(10,16,32,.25) 0%, rgba(10,16,32,0) 28%, rgba(10,16,32,.15) 55%, rgba(10,16,32,.85) 100%);
   }
   .hero-in {
     position: relative; z-index: 1;
@@ -296,6 +298,7 @@
 <body>
 
 <header class="hero">
+  <img class="hero-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/%22Malaga_am_Abend_ist_einfach_magisch%22._08.jpg/1280px-%22Malaga_am_Abend_ist_einfach_magisch%22._08.jpg" srcset="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/%22Malaga_am_Abend_ist_einfach_magisch%22._08.jpg/960px-%22Malaga_am_Abend_ist_einfach_magisch%22._08.jpg 960w, https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/%22Malaga_am_Abend_ist_einfach_magisch%22._08.jpg/1280px-%22Malaga_am_Abend_ist_einfach_magisch%22._08.jpg 1280w, https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/%22Malaga_am_Abend_ist_einfach_magisch%22._08.jpg/1920px-%22Malaga_am_Abend_ist_einfach_magisch%22._08.jpg 1920w" sizes="100vw" alt="Nasvícená Alcazaba a hrad Gibralfaro v noci" fetchpriority="high">
   <div class="hero-in">
     <h1>Málaga</h1>
     <p>Víkend ve dvou od pátku 27. do pondělí 30. listopadu. Kolem 20 °C, vánoční světla a tapas.</p>
@@ -438,6 +441,7 @@
   const WM = "https://upload.wikimedia.org/wikipedia/commons/thumb/";
   const C = "https://commons.wikimedia.org/wiki/File:";
   const PHOTOS = {
+    hero:    { wm: "3/35/%22Malaga_am_Abend_ist_einfach_magisch%22._08.jpg", by: "Holger Uwe Schmitt", lic: "CC BY-SA 4.0" },
     gib:     { local: "img/malaga.jpg", by: "Ввласенко", lic: "CC BY-SA 3.0", page: C + "View_of_Malaga_from_Castillo_Gibralfaro._Spain.jpg" },
     larios2: { wm: "1/17/Calle_Larios_Christmas.jpeg", by: "Adrianna Calvo", lic: "CC0" },
     larios3: { wm: "1/1b/Calle_Larios_Navidad_2019.jpg", by: "Maximo88", lic: "CC BY-SA 4.0" },
@@ -489,7 +493,7 @@
   ];
   const INFO = Object.fromEntries(PLACES.map(([k, n, t, d]) => [k, { n, t, d }]));
   const CAPTIONS = Object.fromEntries(PLACES.map(([k, n]) => [k, n]));
-  Object.assign(CAPTIONS, { cam: "Lávka nad soutěskou Gaitanes", camMost: "Visutý most na Caminito del Rey", alcArch: "Maurské oblouky v Alcazabě", larios3: "Vánoční světla na Calle Larios", gib: "Výhled z Gibralfara" });
+  Object.assign(CAPTIONS, { cam: "Lávka nad soutěskou Gaitanes", camMost: "Visutý most na Caminito del Rey", alcArch: "Maurské oblouky v Alcazabě", hero: "Úvodní fotka: Alcazaba a Gibralfaro v noci", larios3: "Vánoční světla na Calle Larios", gib: "Výhled z Gibralfara" });
   const NOTE_LIGHTS = " Fotky vánočních světel jsou z dřívějších let, výzdoba se každý rok mění.";
 
   const DAYS = {

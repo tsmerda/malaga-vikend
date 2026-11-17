@@ -159,17 +159,34 @@
   .swap span { color: var(--muted); font-size: 15px; }
 
   /* Swipeable photos inside a day */
+  .sw { position: relative; margin: 0 0 18px; }
   .strip {
-    display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory;
-    border-radius: 18px; margin: 0 0 18px; scrollbar-width: none;
+    display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory;
+    scrollbar-width: none; border-radius: 18px;
   }
   .strip::-webkit-scrollbar { display: none; }
-  .strip figure { flex: 0 0 100%; margin: 0; scroll-snap-align: start; border-radius: 18px; overflow: hidden; background: var(--white); }
-  .strip img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
-  .strip figcaption { font-size: 13px; color: var(--muted); padding: 8px 12px; }
-  .dots { display: flex; gap: 6px; justify-content: center; margin: -8px 0 16px; }
-  .dots button { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; background: var(--sky); cursor: pointer; }
-  .dots button[aria-current="true"] { background: var(--cobalt); }
+  .strip figure { flex: 0 0 86%; margin: 0; scroll-snap-align: start; border-radius: 18px; overflow: hidden; background: var(--white); cursor: zoom-in; }
+  .strip img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; background: var(--sky); }
+  .strip figcaption { font-size: 14px; font-weight: 500; padding: 9px 12px; }
+  .sw-n {
+    position: absolute; z-index: 1; top: 10px; left: 10px; pointer-events: none;
+    background: rgba(20,33,61,.78); color: var(--white); font-size: 13px; font-weight: 600;
+    padding: 4px 10px; border-radius: 999px;
+  }
+  .sw-b {
+    position: absolute; z-index: 1; top: 34%; width: 44px; height: 44px;
+    border: 0; border-radius: 50%; cursor: pointer;
+    background: var(--white); color: var(--ink); font: 700 22px/1 var(--body);
+    box-shadow: 0 6px 18px -6px rgba(20,33,61,.55);
+  }
+  .sw-b.prev { left: 8px; } .sw-b.next { right: 8px; }
+  .sw-b[disabled] { opacity: 0; pointer-events: none; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+  .chip {
+    appearance: none; cursor: pointer; font: 600 15px var(--body);
+    padding: 7px 14px; border-radius: 999px; border: 2px solid var(--sky); background: var(--white); color: var(--ink);
+  }
+  .chip[aria-pressed="true"] { background: var(--cobalt); border-color: var(--cobalt); color: var(--white); }
 
   /* Caminito del Rey */
   .cam { background: var(--ink); color: var(--white); border-radius: 22px; overflow: hidden; }
@@ -325,7 +342,12 @@
 
   <section aria-labelledby="h-see">
     <h2 id="h-see">Co v Malaze uvidíme</h2>
-    <p class="lead">Klikni na fotku a uvidíš víc.</p>
+    <p class="lead">Klikni na fotku a uvidíš víc, šipkami pak listuješ dál.</p>
+    <div class="chips" id="chips" role="group" aria-label="Filtr">
+      <button class="chip" aria-pressed="true" data-f="">Vše</button>
+      <button class="chip" aria-pressed="false" data-f="Sobota">Sobota</button>
+      <button class="chip" aria-pressed="false" data-f="Neděle">Neděle</button>
+    </div>
     <div class="gal" id="gal"></div>
   </section>
 
@@ -415,7 +437,14 @@
   const C = "https://commons.wikimedia.org/wiki/File:";
   const PHOTOS = {
     gib:     { local: "img/malaga.jpg", by: "Ввласенко", lic: "CC BY-SA 3.0", page: C + "View_of_Malaga_from_Castillo_Gibralfaro._Spain.jpg" },
-    larios:  { local: "img/larios.jpg", by: "Hernán Piñera", lic: "CC BY-SA 2.0", page: C + "Street_lighting_Malaga_christmas_%2831784122642%29.jpg" },
+    larios2: { wm: "1/17/Calle_Larios_Christmas.jpeg", by: "Adrianna Calvo", lic: "CC0" },
+    larios3: { wm: "1/1b/Calle_Larios_Navidad_2019.jpg", by: "Maximo88", lic: "CC BY-SA 4.0" },
+    parque:  { wm: "b/b3/Paseo_del_Parque_M%C3%A1laga.jpg", by: "AlvaroRG", lic: "CC BY 3.0" },
+    palmeral:{ wm: "8/8a/Palmeral_de_las_Sorpresas%2C_Malaga_2023.jpg", by: "Thomas Dahlstrøm Nielsen", lic: "CC BY-SA 4.0" },
+    toros:   { wm: "2/29/Plaza_de_toros_de_La_Malagueta_%28Malaga_Bullring%29_from_Mirador_del_Gibralfaro_lookout_-_Spain.png", by: "Jonathan Deamer", lic: "CC BY 4.0" },
+    farola:  { wm: "8/83/Farola_de_malaga.JPG", by: "Danielmlg86", lic: "CC BY-SA 3.0 ES" },
+    soho:    { wm: "3/34/The_Place_Soho_Graffiti_04.jpg", by: "Daniel Capilla", lic: "CC BY-SA 4.0" },
+    tapas:   { wm: "c/cd/Tapas_en_El_Pimpi.jpg", by: "Xemenendura", lic: "CC BY-SA 4.0" },
     cam:     { local: "img/caminito.jpg", by: "Diego Delso", lic: "CC BY-SA 4.0", page: C + "Caminito_del_Rey,_M%C3%A1laga,_Espa%C3%B1a,_2023-05-18,_DD_48.jpg" },
     camMost: { local: "img/caminito-most.jpg", by: "Malopez 21", lic: "CC BY-SA 4.0", page: C + "Caminito_del_Rey,_nuevo_puente_colgante,_junto_al_puente_acueducto_de_Ribera.jpg" },
     alcPool: { wm: "4/46/Patio_interior_de_la_Alcazaba_de_M%C3%A1laga.jpg", by: "Jolurove", lic: "CC BY-SA 3.0 ES" },
@@ -439,39 +468,47 @@
 
   const PLACES = [
     ["alcPool", "Alcazaba", "Maurská pevnost z 11. století s patii, fontánami a výhledem na přístav. V neděli od 14:00 zdarma.", "Neděle"],
+    ["larios2", "Calle Larios", "Hlavní třída, od konce listopadu pod vánočními světly se světelnou show.", "Sobota"],
     ["gib", "Vyhlídka Gibralfaro", "Celá Málaga pod námi: přístav, býčí aréna a moře. Nejhezčí je při západu slunce.", "Sobota"],
     ["cat", "Katedrála", "Místní jí říkají La Manquita, jednoruká, protože druhou věž nikdy nedostavěli.", "Sobota"],
-    ["larios", "Calle Larios", "Hlavní třída, od konce listopadu pod vánočními světly se světelnou show.", "Sobota"],
-    ["teatro", "Římské divadlo", "Antické divadlo přímo pod hradbami Alcazaby, vidět je i z ulice.", "Sobota"],
-    ["ata", "Tržnice Atarazanas", "Obří barevná vitráž a tapas přímo u pultů. V neděli je zavřeno.", "Sobota"],
     ["port", "Muelle Uno", "Promenáda v přístavu s palmami, kavárnami a majákem La Farola.", "Sobota"],
-    ["beach", "Pláž Malagueta", "Městská pláž s palmami kousek od centra.", "Sobota"],
+    ["ata", "Tržnice Atarazanas", "Obří barevná vitráž a tapas přímo u pultů. V neděli je zavřeno.", "Sobota"],
     ["pom", "Centre Pompidou", "Barevná skleněná kostka u přístavu, v neděli od 16:00 zdarma.", "Neděle"],
+    ["teatro", "Římské divadlo", "Antické divadlo přímo pod hradbami Alcazaby, vidět je i z ulice.", "Sobota"],
+    ["toros", "Býčí aréna La Malagueta", "Kruhová aréna u pláže, nejlíp je vidět shora z Gibralfara.", "Sobota"],
+    ["palmeral", "Palmeral de las Sorpresas", "Bílá pergola s palmami podél přístavu.", "Sobota"],
+    ["beach", "Pláž Malagueta", "Městská pláž s palmami kousek od centra.", "Sobota"],
     ["ped", "Pedregalejo", "Bývalá rybářská čtvrť, pláže a restaurace se sardinkami z ohně.", "Neděle"],
-    ["centro", "Staré město", "Uličky mezi katedrálou a Plaza de la Merced, kde se narodil Picasso.", "Neděle"]
+    ["centro", "Staré město", "Uličky mezi katedrálou a Plaza de la Merced, kde se narodil Picasso.", "Neděle"],
+    ["soho", "Čtvrť Soho", "Velké malby na fasádách mezi centrem a přístavem.", "Sobota"],
+    ["farola", "Maják La Farola", "Maják na konci přístavní promenády, odtud je to kousek na pláž.", "Sobota"],
+    ["parque", "Paseo del Parque", "Palmová alej mezi centrem a přístavem.", "Sobota"],
+    ["tapas", "Tapas v El Pimpi", "Známá bodega pod Alcazabou, ideální na poslední večeři.", "Neděle"]
   ];
+  const INFO = Object.fromEntries(PLACES.map(([k, n, t, d]) => [k, { n, t, d }]));
   const CAPTIONS = Object.fromEntries(PLACES.map(([k, n]) => [k, n]));
-  Object.assign(CAPTIONS, { cam: "Lávka nad soutěskou Gaitanes", camMost: "Visutý most na Caminito del Rey", alcArch: "Maurské oblouky v Alcazabě", larios: "Calle Larios (foto z dřívějška, výzdoba se každý rok mění)" });
+  Object.assign(CAPTIONS, { cam: "Lávka nad soutěskou Gaitanes", camMost: "Visutý most na Caminito del Rey", alcArch: "Maurské oblouky v Alcazabě", larios3: "Vánoční světla na Calle Larios", gib: "Výhled z Gibralfara" });
+  const NOTE_LIGHTS = " Fotky vánočních světel jsou z dřívějších let, výzdoba se každý rok mění.";
 
   const DAYS = {
     pa: { photos: [], stops: [
       ["20:10", "Odlet z Brna", "Ryanair, s sebou jen malá taška pod sedadlo (40×30×20 cm)."],
       ["23:30", "Přílet do Malagy", "Vlak už nejede, taxi do centra stojí 20–25 €."]
     ]},
-    so: { photos: ["ata", "cat", "teatro", "port", "beach", "gib", "larios"], stops: [
+    so: { photos: ["ata", "cat", "teatro", "soho", "parque", "palmeral", "port", "farola", "beach", "toros", "gib", "larios2", "larios3"], stops: [
       ["9:30", "Tržnice Atarazanas", "Snídaně a tapas, v neděli je zavřeno."],
       ["11:00", "Katedrála a staré město", "Calle Larios, Plaza de la Merced, Římské divadlo."],
       ["14:00", "Muelle Uno a pláž Malagueta", "Oběd u přístavu a procházka po pláži."],
       ["17:00", "Vyhlídka Gibralfaro", "Západ slunce nad přístavem."],
       ["20:30", "Vánoční světla na Calle Larios", "Světelná show, potom tapas v okolí."]
     ]},
-    soAlt: { photos: ["camMost", "cam", "larios"], stops: [
+    soAlt: { photos: ["camMost", "cam", "larios2"], stops: [
       ["ráno", "Autobus z centra", "Výlet s průvodcem, cesta trvá asi hodinu."],
       ["dopol.", "Caminito del Rey", "7,7 km po lávkách ve skalní soutěsce."],
       ["odpol.", "Návrat do Malagy", "Odpočinek a sprcha."],
       ["20:30", "Vánoční světla na Calle Larios", "Světelná show, potom tapas v okolí."]
     ]},
-    ne: { photos: ["ped", "alcPool", "alcArch", "pom", "centro"], stops: [
+    ne: { photos: ["ped", "alcPool", "alcArch", "pom", "centro", "tapas"], stops: [
       ["10:30", "Pláže Pedregalejo a El Palo", "Procházka po pláži, k obědu espetos (sardinky z grilu)."],
       ["14:00", "Alcazaba a hrad Gibralfaro", "V neděli od 14:00 vstup zdarma."],
       ["16:30", "Museo Picasso nebo Centre Pompidou", "V neděli odpoledne vstup zdarma."],
@@ -498,10 +535,12 @@
   function renderDay() {
     const key = state.day === "so" && state.caminito ? "soAlt" : state.day;
     const d = DAYS[key];
-    const photos = d.photos.length
-      ? `<div><div class="strip" id="strip" tabindex="0" aria-label="Fotky, posuň do strany">${d.photos.map((k, i) =>
-          `<figure><img src="${src(k)}" alt="${esc(CAPTIONS[k])}" width="1280" height="720"${i ? ' loading="lazy"' : ""}><figcaption>${esc(CAPTIONS[k])}</figcaption></figure>`).join("")}</div>` +
-        (d.photos.length > 1 ? `<div class="dots">${d.photos.map((_, i) => `<button aria-label="Fotka ${i + 1}" aria-current="${i === 0}"></button>`).join("")}</div>` : "") + `</div>`
+    const n = d.photos.length;
+    const photos = n
+      ? `<div class="sw"><span class="sw-n" id="sw-n">1 / ${n}</span>` +
+        `<button class="sw-b prev" id="sw-prev" aria-label="Předchozí fotka" disabled>‹</button><button class="sw-b next" id="sw-next" aria-label="Další fotka">›</button>` +
+        `<div class="strip" id="strip">${d.photos.map((k, i) =>
+          `<figure data-i="${i}"><img src="${src(k, 960)}" alt="${esc(CAPTIONS[k])}" width="960" height="540"${i > 1 ? ' loading="lazy"' : ""}><figcaption>${esc(CAPTIONS[k])}</figcaption></figure>`).join("")}</div></div>`
       : "";
     const list = `<ol class="stops">${d.stops.map(([t, n, x]) => `<li><time>${t}</time><div><b>${esc(n)}</b><span>${esc(x)}</span></div></li>`).join("")}</ol>`;
     const swap = state.day === "so"
@@ -513,13 +552,22 @@
     const cb = document.getElementById("caminito");
     if (cb) cb.addEventListener("change", e => setCaminito(e.target.checked));
     const strip = document.getElementById("strip");
-    const dots = [...panel.querySelectorAll(".dots button")];
-    if (strip && dots.length) {
-      dots.forEach((b, i) => b.addEventListener("click", () => strip.scrollTo({ left: i * strip.clientWidth, behavior: "smooth" })));
-      strip.addEventListener("scroll", () => {
-        const i = Math.round(strip.scrollLeft / strip.clientWidth);
-        dots.forEach((b, j) => b.setAttribute("aria-current", i === j));
-      }, { passive: true });
+    if (strip) {
+      const figs = [...strip.children];
+      const step = () => figs[1] ? figs[1].offsetLeft - figs[0].offsetLeft : strip.clientWidth;
+      const idx = () => Math.min(figs.length - 1, Math.round(strip.scrollLeft / step()));
+      const prev = document.getElementById("sw-prev"), next = document.getElementById("sw-next");
+      const sync = () => {
+        const i = strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 4 ? figs.length - 1 : idx();
+        document.getElementById("sw-n").textContent = `${i + 1} / ${figs.length}`;
+        prev.disabled = strip.scrollLeft < 4;
+        next.disabled = i >= figs.length - 1;
+      };
+      prev.addEventListener("click", () => strip.scrollBy({ left: -step(), behavior: "smooth" }));
+      next.addEventListener("click", () => strip.scrollBy({ left: step(), behavior: "smooth" }));
+      strip.addEventListener("scroll", sync, { passive: true });
+      strip.addEventListener("click", e => { const f = e.target.closest("figure"); if (f) openLb(d.photos, +f.dataset.i); });
+      sync();
     }
   }
 
@@ -577,21 +625,39 @@
 
   // Gallery + lightbox
   const gal = document.getElementById("gal");
-  gal.innerHTML = PLACES.map(([k, n, , day], i) =>
-    `<button class="card" data-i="${i}" aria-label="${esc(n)}, ${day}"><img src="${src(k, i ? 960 : 1280)}" alt="" loading="lazy"><i>${day}</i><b>${esc(n)}</b></button>`).join("");
-  const lb = document.getElementById("lb");
-  let cur = 0;
-  function show(i) {
-    cur = (i + PLACES.length) % PLACES.length;
-    const [k, n, t, day] = PLACES[cur];
-    const img = document.getElementById("lb-img");
-    img.src = src(k); img.alt = n;
-    document.getElementById("lb-name").textContent = n;
-    document.getElementById("lb-text").textContent = `${t} V plánu: ${day.toLowerCase()}.`;
-    document.getElementById("lb-credit").innerHTML = `Foto: <a href="${page(k)}" target="_blank" rel="noopener">${esc(PHOTOS[k].by)}</a>, ${PHOTOS[k].lic}`;
-    document.getElementById("lb-count").textContent = `${cur + 1} / ${PLACES.length}`;
+  let filter = "";
+  function renderGal() {
+    const list = PLACES.filter(p => !filter || p[3] === filter);
+    gal.innerHTML = list.map(([k, n, , day], i) =>
+      `<button class="card" data-k="${k}" aria-label="${esc(n)}, ${day}"><img src="${src(k, i ? 960 : 1280)}" alt="" loading="lazy"><i>${day}</i><b>${esc(n)}</b></button>`).join("");
   }
-  gal.addEventListener("click", e => { const c = e.target.closest(".card"); if (!c) return; show(+c.dataset.i); lb.showModal(); });
+  document.getElementById("chips").addEventListener("click", e => {
+    const c = e.target.closest(".chip"); if (!c) return;
+    filter = c.dataset.f;
+    document.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x === c));
+    renderGal();
+  });
+  const lb = document.getElementById("lb");
+  let lbList = [], cur = 0;
+  function show(i) {
+    cur = (i + lbList.length) % lbList.length;
+    const k = lbList[cur], info = INFO[k];
+    const img = document.getElementById("lb-img");
+    img.src = src(k); img.alt = CAPTIONS[k];
+    document.getElementById("lb-name").textContent = info ? info.n : CAPTIONS[k];
+    let t = info ? `${info.t} V plánu: ${info.d.toLowerCase()}.` : "";
+    if (k.startsWith("larios")) t += NOTE_LIGHTS;
+    document.getElementById("lb-text").textContent = t;
+    document.getElementById("lb-credit").innerHTML = `Foto: <a href="${page(k)}" target="_blank" rel="noopener">${esc(PHOTOS[k].by)}</a>, ${PHOTOS[k].lic}`;
+    document.getElementById("lb-count").textContent = `${cur + 1} / ${lbList.length}`;
+    const nx = lbList[(cur + 1) % lbList.length]; new Image().src = src(nx);
+  }
+  function openLb(list, i) { lbList = list; show(i); if (!lb.open) lb.showModal(); }
+  gal.addEventListener("click", e => {
+    const c = e.target.closest(".card"); if (!c) return;
+    const list = [...gal.querySelectorAll(".card")].map(x => x.dataset.k);
+    openLb(list, list.indexOf(c.dataset.k));
+  });
   document.getElementById("lb-prev").addEventListener("click", () => show(cur - 1));
   document.getElementById("lb-next").addEventListener("click", () => show(cur + 1));
   document.getElementById("lb-close").addEventListener("click", () => lb.close());
@@ -600,6 +666,7 @@
   let x0 = null;
   lb.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, { passive: true });
   lb.addEventListener("touchend", e => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1)); x0 = null; });
+  renderGal();
 
   document.getElementById("credits").innerHTML = "Fotky z Wikimedia Commons (některé oříznuté): " +
     Object.keys(PHOTOS).map(k => `<a href="${page(k)}" target="_blank" rel="noopener">${esc(CAPTIONS[k] || k)}</a>, ${esc(PHOTOS[k].by)}, ${PHOTOS[k].lic}`).join("; ") + ".";

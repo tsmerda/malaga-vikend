@@ -158,6 +158,40 @@
   .swap input { width: 22px; height: 22px; margin: 2px 0 0; accent-color: var(--cobalt); flex: none; }
   .swap span { color: var(--muted); font-size: 15px; }
 
+  /* Swipeable photos inside a day */
+  .strip {
+    display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory;
+    border-radius: 18px; margin: 0 0 18px; scrollbar-width: none;
+  }
+  .strip::-webkit-scrollbar { display: none; }
+  .strip figure { flex: 0 0 100%; margin: 0; scroll-snap-align: start; border-radius: 18px; overflow: hidden; background: var(--white); }
+  .strip img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+  .strip figcaption { font-size: 13px; color: var(--muted); padding: 8px 12px; }
+  .dots { display: flex; gap: 6px; justify-content: center; margin: -8px 0 16px; }
+  .dots button { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; background: var(--sky); cursor: pointer; }
+  .dots button[aria-current="true"] { background: var(--cobalt); }
+
+  /* Caminito del Rey */
+  .cam { background: var(--ink); color: var(--white); border-radius: 22px; overflow: hidden; }
+  .cam-photos { display: grid; gap: 4px; }
+  .cam-photos figure { margin: 0; position: relative; }
+  .cam-photos img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+  .cam-photos figcaption {
+    position: absolute; left: 10px; bottom: 10px; font-size: 13px;
+    background: rgba(20,33,61,.72); color: var(--white); padding: 3px 9px; border-radius: 999px;
+  }
+  .cam-body { padding: 20px 22px 22px; }
+  .cam-body h2 { color: var(--white); }
+  .cam-body p { margin: 6px 0 16px; opacity: .88; max-width: 58ch; }
+  .facts { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
+  .facts li { background: rgba(255,255,255,.1); border-radius: 999px; padding: 6px 12px; font-size: 15px; }
+  .toggle {
+    appearance: none; cursor: pointer; border: 0;
+    font: 600 16px var(--body); padding: 12px 18px; border-radius: 999px;
+    background: var(--gold); color: var(--ink);
+  }
+  .toggle[aria-pressed="true"] { background: var(--white); }
+
   /* Budget */
   .budget { width: 100%; border-collapse: collapse; background: var(--white); border-radius: 16px; overflow: hidden; }
   .budget td { padding: 12px 16px; border-top: 1px solid var(--wash); }
@@ -186,6 +220,9 @@
 
   @media (min-width: 760px) {
     body { font-size: 18px; }
+    .cam-photos { grid-template-columns: 1.4fr 1fr; }
+    .cam-photos img { height: 100%; aspect-ratio: auto; min-height: 300px; }
+    .cam-body { padding: 26px 32px 30px; }
     .leg { padding: 26px 32px 24px; }
     .perf { margin: 0 32px; }
     .perf::before { left: -45px; } .perf::after { right: -45px; }
@@ -260,6 +297,23 @@
     <div id="day-panel" role="tabpanel" aria-labelledby="t-so"></div>
   </section>
 
+  <section class="cam" aria-labelledby="h-cam">
+    <div class="cam-photos">
+      <figure><img src="img/caminito.jpg" alt="Lávka Caminito del Rey ve skalní soutěsce nad tyrkysovou řekou" width="1200" height="677" loading="lazy"><figcaption>Soutěska Gaitanes</figcaption></figure>
+      <figure><img src="img/caminito-most.jpg" alt="Lidé v helmách přecházejí visutý most nad soutěskou" width="1200" height="677" loading="lazy"><figcaption>Visutý most</figcaption></figure>
+    </div>
+    <div class="cam-body">
+      <h2 id="h-cam">Výlet na Caminito del Rey</h2>
+      <p>Stezka po lávkách přichycených ke skále, na konci visutý most přes soutěsku. Hodinu autobusem z Malagy, místo soboty ve městě.</p>
+      <ul class="facts">
+        <li>7,7 km</li>
+        <li>66 € s dopravou a průvodcem</li>
+        <li>rezervovat předem</li>
+      </ul>
+      <button class="toggle" id="cam-toggle" aria-pressed="false">Přidat do plánu</button>
+    </div>
+  </section>
+
   <section aria-labelledby="h-money">
     <h2 id="h-money">Kolik to stojí</h2>
     <p class="lead">Na osobu, bez jídla a vstupů.</p>
@@ -282,8 +336,10 @@
   <p>Fotky (oříznuté) z Wikimedia Commons:
     <a href="https://commons.wikimedia.org/wiki/File:View_of_Malaga_from_Castillo_Gibralfaro._Spain.jpg">Málaga z Gibralfara</a>, Ввласенко, CC BY-SA 3.0;
     <a href="https://commons.wikimedia.org/wiki/File:Street_lighting_Malaga_christmas_%2831784122642%29.jpg">Calle Larios</a>, Hernán Piñera, CC BY-SA 2.0;
-    <a href="https://commons.wikimedia.org/wiki/File:Alcazaba,_M%C3%A1laga,_Espa%C3%B1a,_2023-05-20,_DD_10.jpg">Alcazaba</a>, Diego Delso, CC BY-SA 4.0;
-    <a href="https://commons.wikimedia.org/wiki/File:Desfiladero_de_los_Gaitanes_%2853709435674%29.jpg">Caminito del Rey</a>, Alan Grant, CC BY 2.0.
+    <a href="https://commons.wikimedia.org/wiki/File:Plaza_de_Armas,_Alcazaba_of_M%C3%A1laga.jpg">Alcazaba</a>, Florent Pecassou, CC BY-SA 4.0;
+    <a href="https://commons.wikimedia.org/wiki/File:Pescado_al_espeto,_playa_de_la_Malagueta,_M%C3%A1laga,_Espa%C3%B1a,_2023-05-20,_DD_68.jpg">Espetos</a>, Diego Delso, CC BY-SA 4.0;
+    <a href="https://commons.wikimedia.org/wiki/File:Caminito_del_Rey,_M%C3%A1laga,_Espa%C3%B1a,_2023-05-18,_DD_48.jpg">Caminito del Rey</a>, Diego Delso, CC BY-SA 4.0;
+    <a href="https://commons.wikimedia.org/wiki/File:Caminito_del_Rey,_nuevo_puente_colgante,_junto_al_puente_acueducto_de_Ribera.jpg">Visutý most</a>, Malopez 21, CC BY-SA 4.0.
   </p>
 </footer>
 
@@ -306,30 +362,30 @@
   const FLIGHTS = 3171, TRANSPORT = 375, CAMINITO = 1600;
 
   const DAYS = {
-    pa: { photo: null, stops: [
+    pa: { photos: [], stops: [
       ["20:10", "Odlet z Brna", "Ryanair, s sebou jen malá taška pod sedadlo (40×30×20 cm)."],
       ["23:30", "Přílet do Malagy", "Vlak už nejede, taxi do centra stojí 20–25 €."]
     ]},
-    so: { photo: ["img/larios.jpg", "Vánoční světla na Calle Larios, foto z dřívějšího roku. Výzdoba se každý rok mění."], stops: [
+    so: { photos: [["img/larios.jpg", "Vánoční světla na Calle Larios (foto z dřívějška, výzdoba se každý rok mění)"]], stops: [
       ["9:30", "Tržnice Atarazanas", "Snídaně a tapas, v neděli je zavřeno."],
       ["11:00", "Katedrála a staré město", "Calle Larios, Plaza de la Merced, Římské divadlo."],
       ["14:00", "Muelle Uno a pláž Malagueta", "Oběd u přístavu a procházka po pláži."],
       ["17:00", "Vyhlídka Gibralfaro", "Západ slunce nad přístavem."],
       ["20:30", "Vánoční světla na Calle Larios", "Světelná show, potom tapas v okolí."]
     ]},
-    soAlt: { photo: ["img/caminito.jpg", "Caminito del Rey v soutěsce Desfiladero de los Gaitanes."], stops: [
+    soAlt: { photos: [["img/caminito-most.jpg", "Visutý most na Caminito del Rey"], ["img/caminito.jpg", "Lávka nad soutěskou Gaitanes"]], stops: [
       ["ráno", "Autobus z centra", "Výlet s průvodcem, cesta trvá asi hodinu."],
       ["dopol.", "Caminito del Rey", "7,7 km po lávkách ve skalní soutěsce."],
       ["odpol.", "Návrat do Malagy", "Odpočinek a sprcha."],
       ["20:30", "Vánoční světla na Calle Larios", "Světelná show, potom tapas v okolí."]
     ]},
-    ne: { photo: ["img/alcazaba.jpg", "Alcazaba nad Římským divadlem."], stops: [
+    ne: { photos: [["img/espetos.jpg", "Espetos: sardinky grilované na ohni přímo na pláži"], ["img/alcazaba.jpg", "Zahrady v Alcazabě"]], stops: [
       ["10:30", "Pláže Pedregalejo a El Palo", "Procházka po pláži, k obědu espetos (sardinky z grilu)."],
       ["14:00", "Alcazaba a hrad Gibralfaro", "V neděli od 14:00 vstup zdarma."],
       ["16:30", "Museo Picasso nebo Centre Pompidou", "V neděli odpoledne vstup zdarma."],
       ["18:30", "Světla a poslední večeře", "Brzy spát, ráno se letí."]
     ]},
-    po: { photo: null, stops: [
+    po: { photos: [], stops: [
       ["5:45", "Na letiště", "Vlak C1 z centra nebo taxi."],
       ["7:55", "Odlet z Malagy", "Ryanair, přímý let."],
       ["11:10", "Přílet do Brna", "Doma před polednem."]
@@ -350,18 +406,37 @@
   function renderDay() {
     const key = state.day === "so" && state.caminito ? "soAlt" : state.day;
     const d = DAYS[key];
-    const photo = d.photo
-      ? `<figure class="day-photo"><img src="${d.photo[0]}" alt="${esc(d.photo[1])}" width="1200" height="677"><figcaption>${esc(d.photo[1])}</figcaption></figure>`
+    const photos = d.photos.length
+      ? `<div><div class="strip" id="strip" tabindex="0" aria-label="Fotky, posuň do strany">${d.photos.map(([src, cap]) =>
+          `<figure><img src="${src}" alt="${esc(cap)}" width="1200" height="677"><figcaption>${esc(cap)}</figcaption></figure>`).join("")}</div>` +
+        (d.photos.length > 1 ? `<div class="dots">${d.photos.map((_, i) => `<button aria-label="Fotka ${i + 1}" aria-current="${i === 0}"></button>`).join("")}</div>` : "") + `</div>`
       : "";
     const list = `<ol class="stops">${d.stops.map(([t, n, x]) => `<li><time>${t}</time><div><b>${esc(n)}</b><span>${esc(x)}</span></div></li>`).join("")}</ol>`;
     const swap = state.day === "so"
-      ? `<label class="swap"><input type="checkbox" id="caminito" ${state.caminito ? "checked" : ""}><div><b>Místo města výlet na Caminito del Rey</b><br><span>Stezka po lávkách hodinu od Malagy. Výlet s dopravou a vstupem 66 € na osobu, rezervovat předem.</span></div></label>`
+      ? `<label class="swap"><input type="checkbox" id="caminito" ${state.caminito ? "checked" : ""}><div><b>Místo města výlet na Caminito del Rey</b><br><span>Stezka po lávkách hodinu od Malagy, 66 € na osobu.</span></div></label>`
       : "";
     const panel = document.getElementById("day-panel");
     panel.setAttribute("aria-labelledby", "t-" + state.day);
-    panel.innerHTML = photo ? `<div class="program">${photo}<div>${list}${swap}</div></div>` : `${list}${swap}`;
+    panel.innerHTML = photos ? `<div class="program">${photos}<div>${list}${swap}</div></div>` : `${list}${swap}`;
     const cb = document.getElementById("caminito");
-    if (cb) cb.addEventListener("change", e => { state.caminito = e.target.checked; renderDay(); renderBudget(); });
+    if (cb) cb.addEventListener("change", e => setCaminito(e.target.checked));
+    const strip = document.getElementById("strip");
+    const dots = [...panel.querySelectorAll(".dots button")];
+    if (strip && dots.length) {
+      dots.forEach((b, i) => b.addEventListener("click", () => strip.scrollTo({ left: i * strip.clientWidth, behavior: "smooth" })));
+      strip.addEventListener("scroll", () => {
+        const i = Math.round(strip.scrollLeft / strip.clientWidth);
+        dots.forEach((b, j) => b.setAttribute("aria-current", i === j));
+      }, { passive: true });
+    }
+  }
+
+  function setCaminito(on) {
+    state.caminito = on;
+    const t = document.getElementById("cam-toggle");
+    t.setAttribute("aria-pressed", on);
+    t.textContent = on ? "V plánu na sobotu, odebrat" : "Přidat do plánu";
+    renderDay(); renderBudget();
   }
 
   function renderBudget() {
@@ -400,6 +475,13 @@
     state.day = t.dataset.day; renderDay();
   }
   tabs.forEach(x => x.tabIndex = x.getAttribute("aria-selected") === "true" ? 0 : -1);
+
+  document.getElementById("cam-toggle").addEventListener("click", () => {
+    setCaminito(!state.caminito);
+    if (!state.caminito) return;
+    select(document.getElementById("t-so"));
+    document.getElementById("h-plan").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  });
 
   renderStay(); renderDay(); renderBudget();
 </script>
